@@ -1,0 +1,3 @@
+[submodule "valet"]
+	path = valet
+	url = https://github.com/laravel/valet.git
