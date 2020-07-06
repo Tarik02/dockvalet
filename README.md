@@ -15,6 +15,8 @@ server {
     listen 80 default_server;
     listen [::]:80 default_server ipv6only=on;
 
+     root /;
+
     # For https
     # listen 443 ssl;
     # listen [::]:443 ssl ipv6only=on;
@@ -22,18 +24,26 @@ server {
     # ssl_certificate_key /etc/nginx/ssl/default.key;
 
     # Uncomment the next line, replacing this path to dockvalet inside nginx container.
-    # root /home/tarik02/Laradock/.dockvalet;
 
-    location / {
-        rewrite ^ /server.php last;
+    location /41c270e4-5535-4daa-b23e-c269744c2f45/ {
+        internal;
+        alias /;
+        try_files $uri $uri/;
     }
 
-    error_page 404 /server.php;
+    location / {
+        rewrite ^ "/path/to/dockvalet/server.php" last;
+    }
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location = /robots.txt  { access_log off; log_not_found off; }
+
+    error_page 404 "/path/to/dockvalet/server.php";
 
     location ~ \.php$ {
-        try_files $uri /server.php =404;
+        try_files $uri /path/to/dockvalet/server.php =404;
         fastcgi_pass php-upstream;
-        fastcgi_index server.php;
+        fastcgi_index /path/to/dockvalet/server.php;
         fastcgi_buffers 16 16k;
         fastcgi_buffer_size 32k;
         fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
