@@ -18,11 +18,11 @@ if (! file_exists(VALET_HOME_PATH . '/config.json')) {
 }
 
 if (
-    ! file_exists('tmp/server-patched.php') or
-    filemtime('valet/server.php') > filemtime('tmp/server-patched.php')
+    ! file_exists('valet/server-patched.php') or
+    filemtime('valet/server.php') > filemtime('valet/server-patched.php')
 ) {
     file_put_contents(
-        'tmp/server-patched.php',
+        'valet/server-patched.php',
         str_replace(
             "define('VALET_HOME_PATH'",
             "// define('VALET_HOME_PATH'",
@@ -31,4 +31,4 @@ if (
     );
 }
 
-include 'valet/server.php';
+include 'valet/server-patched.php';
